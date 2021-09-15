@@ -23,14 +23,21 @@
   "dependencies": {
     "apollo-server-core": "^3.3.0",
     "apollo-server-express": "^3.3.0",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "^15.5.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.5"
   },
   "devDependencies": {
+    "@types/node": "^16.9.1",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "eslint": "^7.32.0",
     "jest": "^27.2.0",
     "nodemon": "^2.0.12",

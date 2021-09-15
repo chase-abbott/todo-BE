@@ -2,8 +2,15 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
 type User {
+  _id: String!
   username: String!
-  passwordHash: String!
+}
+
+type Todo {
+  _id: String!
+  userId: String!
+  content: String!
+  completed: Boolean!
 }
 
 #Queries
@@ -11,13 +18,19 @@ type User {
 type Query {
   #Returns a list of users
   getAllUsers: [User!]!
+
   #getMatchingUser
   user(username: String!): User
+
+  #Returns all of a user's todos
+  todo(username: String!): [Todo!]!
 }
 
 #Mutations
   type Mutation {
-    createUser(username: String!, password: String!): User!
+    login(username: String!, password: String!): User!
+    signup(username: String!, password: String!): User!
+    addTodo(userId: String!, content: String!): Todo!
   }
 `
 

@@ -29,3 +29,7 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+      env: 
+        CI: true
+        MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
+        SALT: ${{ secrets.SALT }}
