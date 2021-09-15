@@ -1,6 +1,7 @@
 
 const { User } = require('../connection.js')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -37,7 +38,12 @@ const resolvers = {
             bcrypt.compare(args.password, user.passwordHash, (err, results) => {
 
               if (err) reject('Incorrect Username or Password')
-              results ? resolve(user) : reject('Incorrect Username or Password')
+              else {
+                console.log(user)
+                results
+                  ? resolve(jwt.sign(JSON.stringify(user), process.env.SECRET))
+                  : reject('Incorrect Username or Password')
+              }
             })
           }
         })

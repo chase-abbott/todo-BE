@@ -13,6 +13,10 @@ let db = mongoose.connection;
 db.on('error', () => {
   console.error("Error while connecting to DB");
 });
+db.once('open', () => {
+  console.log('we\'re connected!');
+  // we're connected!
+});
 
 
 const User = mongoose.model('Users', userSchema)
