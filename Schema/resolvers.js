@@ -14,9 +14,13 @@ const resolvers = {
         })
       })
     },
-    user: (_, args) => {
-      console.log(args)
-      return users.find(user => user.username == args.username)
+    user: (_, { username }) => {
+      return new Promise((resolve, reject) => {
+        User.findOne({ username }, (err, user) => {
+          if (err) reject(err)
+          else resolve(user)
+        })
+      })
     }
   },
   Mutation: {
