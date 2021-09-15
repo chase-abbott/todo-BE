@@ -31,8 +31,7 @@ const resolvers = {
           if (user) {
             reject('Username already exists')
           }
-          bcrypt.genSalt(8, (err, salt) => {
-            console.log(salt)
+          bcrypt.genSalt(Number(process.env.SALT), (err, salt) => {
             bcrypt.hash(args.password, salt)
               .then(passwordHash => {
                 resolve(User.create({ username: args.username, passwordHash: passwordHash }))
