@@ -32,3 +32,4 @@ jobs:
       env: 
         CI: true
         MONGO_DB_URI: ${{ secrets.MONGO_DB_URI }}
+        SALT: ${{ secrets.SALT }}
