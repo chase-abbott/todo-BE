@@ -13,12 +13,15 @@ const resolvers = {
     }
   },
   Mutation: {
-    createUser: (_, args) => {
+    login: (_, args) => {
       args.passwordHash = args.password;
       delete args.password;
       const newUser = args;
       users.push(newUser)
       return newUser;
+    },
+    signup: (_, args) => {
+
     }
   }
 }
