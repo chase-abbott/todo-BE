@@ -1,4 +1,8 @@
 const users = require('../data.js')
+const { User } = require('../connection.js')
+const bcrypt = require('bcrypt')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const resolvers = {
   Query: {
@@ -20,7 +24,23 @@ const resolvers = {
       users.push(newUser)
       return newUser;
     },
-    signup: (_, args) => {
+    signup: async (_, args) => {
+      return new Promise((resolve, reject) => {
+        User.findOne({ username: args.username }, (err, user) => {
+
+          if (user) {
+            reject('Username already exists')
+          }
+          bcrypt.genSalt(8, (err, salt) => {
+            console.log(salt)
+            bcrypt.hash(args.password, salt)
+              .then(passwordHash => {
+                resolve(User.create({ username: args.username, passwordHash: passwordHash }))
+              })
+          })
+
+        })
+      })
 
     }
   }

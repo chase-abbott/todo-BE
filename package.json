@@ -33,6 +33,11 @@
     "mongoose": "^6.0.5"
   },
   "devDependencies": {
+    "@types/node": "^16.9.1",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "eslint": "^7.32.0",
     "jest": "^27.2.0",
     "nodemon": "^2.0.12",
