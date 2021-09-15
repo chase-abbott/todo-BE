@@ -76,6 +76,7 @@ const resolvers = {
           bcrypt.genSalt(Number(process.env.SALT), (err, salt) => {
             bcrypt.hash(args.password, salt)
               .then(passwordHash => {
+                jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1h' })
                 resolve(User.create({ username: args.username, passwordHash: passwordHash }))
               })
           })
