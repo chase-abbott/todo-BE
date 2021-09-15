@@ -18,11 +18,23 @@ const resolvers = {
   },
   Mutation: {
     login: (_, args) => {
-      args.passwordHash = args.password;
-      delete args.password;
-      const newUser = args;
-      users.push(newUser)
-      return newUser;
+      return new Promise((resolve, reject) => {
+        User.findOne({ username: args.username }, (err, user) => {
+
+          if (err) {
+            reject(err)
+          }
+          if (!user) {
+            reject('Incorrect Username or Password')
+          } else {
+            bcrypt.compare(args.password, user.passwordHash, (err, results) => {
+
+              if (err) reject('Incorrect Username or Password')
+              results ? resolve(user) : reject('Incorrect Username or Password')
+            })
+          }
+        })
+      })
     },
     signup: async (_, args) => {
       return new Promise((resolve, reject) => {
