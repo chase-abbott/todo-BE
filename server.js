@@ -8,14 +8,15 @@ const resolvers = require('./Schema/resolvers.js')
 
 const PORT = process.env.PORT || 4000;
 
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   context: ({ req }) => {
-    const user = req.user || null;
-    return user
-  }
+    const user = req.headers.authorization || null;
+    return { user }
+  },
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 
 server.start()

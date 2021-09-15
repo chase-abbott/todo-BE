@@ -22,6 +22,24 @@ const resolvers = {
           else resolve(user)
         })
       })
+    },
+    viewer: (_, __, { user }) => {
+      const session = user.split('Bearer')[1].trim()
+      const payload = jwt.verify(session, process.env.SECRET, function (err, decoded) {
+        if (err) {
+          return;
+        }
+        return decoded
+      }
+      );
+      if (!payload) throw new Error('Not Authorized')
+
+      return new Promise((resolve, reject) => {
+        User.findOne({ _id: payload.user._id }, (err, user) => {
+          if (err) reject(err)
+          else resolve(user)
+        })
+      })
     }
   },
   Mutation: {
@@ -39,9 +57,8 @@ const resolvers = {
 
               if (err) reject('Incorrect Username or Password')
               else {
-                console.log(user)
                 results
-                  ? resolve(jwt.sign(JSON.stringify(user), process.env.SECRET))
+                  ? resolve(jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1h' }))
                   : reject('Incorrect Username or Password')
               }
             })

@@ -24,6 +24,8 @@ type Query {
 
   #Returns all of a user's todos
   todo(username: String!): [Todo!]!
+
+  viewer: User
 }
 
 #Mutations
