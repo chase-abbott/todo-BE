@@ -17,7 +17,7 @@ type Query {
 
 #Mutations
   type Mutation {
-    createUser: User!
+    createUser(username: String!, password: String!): User!
   }
 `
 
