@@ -4,7 +4,6 @@ const typeDefs = gql`
 type User {
   _id: String!
   username: String!
-  passwordHash: String!
 }
 
 #Queries
