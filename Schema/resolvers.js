@@ -1,4 +1,4 @@
-const users = require('../data.js')
+
 const { User } = require('../connection.js')
 const bcrypt = require('bcrypt')
 const dotenv = require('dotenv')
@@ -7,9 +7,12 @@ dotenv.config()
 const resolvers = {
   Query: {
     getAllUsers: () => {
-      //return data from mongoDB 
-      //schema.find
-      return users;
+      return new Promise((resolve, reject) => {
+        User.find((err, users) => {
+          if (err) reject(err)
+          else resolve(users)
+        })
+      })
     },
     user: (_, args) => {
       console.log(args)
