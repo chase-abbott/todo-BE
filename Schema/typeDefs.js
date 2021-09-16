@@ -22,8 +22,8 @@ type Query {
   #getMatchingUser
   user(username: String!): User
 
-  #Returns all of a user's todos
-  todo(username: String!): [Todo!]!
+  #Returns all of the logged in user's todos
+  todos: [Todo!]!
 
   viewer: User
 }
@@ -33,6 +33,7 @@ type Query {
     login(username: String!, password: String!): String
     signup(username: String!, password: String!): String
     addTodo(content: String!): Todo!
+    completeTodo(_id: String!): Todo!
   }
 `
 

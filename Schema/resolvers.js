@@ -42,6 +42,12 @@ const resolvers = {
           else resolve(user)
         })
       })
+    },
+    todos: (_, __, { userId, isAuth }) => {
+      if (!isAuth || !userId) throw new Error("Not Authorized")
+      return new Promise((resolve) => {
+        resolve(Todo.find({ userId }))
+      })
     }
   },
   Mutation: {
@@ -90,8 +96,14 @@ const resolvers = {
     },
     addTodo: (_, { content }, { userId, isAuth }) => {
       if (!isAuth || !userId) throw new Error("Not Authorized")
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve(Todo.create({ userId, content, completed: false }))
+      })
+    },
+    completeTodo: (_, { _id }, { userId, isAuth }) => {
+      if (!isAuth || !userId) throw new Error('Not Authorized')
+      return new Promise(resolve => {
+        resolve(Todo.findOneAndUpdate({ _id, userId }, { completed: true }, { new: true }))
       })
     }
   }
