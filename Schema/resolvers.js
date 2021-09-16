@@ -105,6 +105,14 @@ const resolvers = {
       return new Promise(resolve => {
         resolve(Todo.findOneAndUpdate({ _id, userId }, { completed: true }, { new: true }))
       })
+    },
+    deleteTodo: async (_, { _id }, { userId, isAuth }) => {
+      if (!isAuth || !userId) throw new Error('Not Authorized')
+      return new Promise((resolve, reject) => {
+        Todo.findOneAndDelete({ _id, userId }, { new: true }, (err, results) => {
+          err ? reject(err) : resolve(results)
+        })
+      })
     }
   }
 }

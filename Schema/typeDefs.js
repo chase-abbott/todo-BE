@@ -34,6 +34,7 @@ type Query {
     signup(username: String!, password: String!): String
     addTodo(content: String!): Todo!
     completeTodo(_id: String!): Todo!
+    deleteTodo(_id: String!): Todo
   }
 `
 
