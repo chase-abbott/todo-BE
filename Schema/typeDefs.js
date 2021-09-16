@@ -32,7 +32,7 @@ type Query {
   type Mutation {
     login(username: String!, password: String!): String
     signup(username: String!, password: String!): String
-    addTodo(userId: String!, content: String!): Todo!
+    addTodo(content: String!): Todo!
   }
 `
 

@@ -1,5 +1,5 @@
 
-const { User } = require('../connection.js')
+const { User, Todo } = require('../connection.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -68,7 +68,7 @@ const resolvers = {
         })
       })
     },
-    signup: async (_, args) => {
+    signup: (_, args) => {
       return new Promise((resolve, reject) => {
         User.findOne({ username: args.username }, (err, user) => {
 
@@ -87,6 +87,12 @@ const resolvers = {
         })
       })
 
+    },
+    addTodo: (_, { content }, { userId, isAuth }) => {
+      if (!isAuth || !userId) throw new Error("Not Authorized")
+      return new Promise((resolve, reject) => {
+        resolve(Todo.create({ userId, content, completed: false }))
+      })
     }
   }
 }

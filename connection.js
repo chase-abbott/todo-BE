@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userSchema = require('./lib/models/User');
+const todoSchema = require('./lib/models/Todo.js')
 dotenv.config();
 
 
@@ -20,5 +21,6 @@ db.once('open', () => {
 
 
 const User = mongoose.model('Users', userSchema)
+const Todo = mongoose.model('Todo', todoSchema)
 
-module.exports = { User }
+module.exports = { User, Todo }
