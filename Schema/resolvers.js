@@ -23,7 +23,9 @@ const resolvers = {
         })
       })
     },
-    viewer: (_, __, { user }) => {
+    viewer: (_, __, { user, isAuth }) => {
+      console.log(isAuth)
+      if (!isAuth) throw new Error('Not Authorized')
       const session = user.split('Bearer')[1].trim()
       const payload = jwt.verify(session, process.env.SECRET, function (err, decoded) {
         if (err) {
@@ -58,7 +60,7 @@ const resolvers = {
               if (err) reject('Incorrect Username or Password')
               else {
                 results
-                  ? resolve(jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1h' }))
+                  ? resolve(jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1d' }))
                   : reject('Incorrect Username or Password')
               }
             })
@@ -73,11 +75,12 @@ const resolvers = {
           if (user) {
             reject('Username already exists')
           }
+
           bcrypt.genSalt(Number(process.env.SALT), (err, salt) => {
             bcrypt.hash(args.password, salt)
               .then(passwordHash => {
-                jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1h' })
-                resolve(User.create({ username: args.username, passwordHash: passwordHash }))
+                User.create({ username: args.username, passwordHash: passwordHash })
+                resolve(jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1d' }))
               })
           })
 
