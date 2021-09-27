@@ -8,6 +8,7 @@ dotenv.config()
 const resolvers = {
   Query: {
     getAllUsers: () => {
+      console.log('endpoint hit')
       return new Promise((resolve, reject) => {
         User.find((err, users) => {
           if (err) reject(err)
@@ -52,22 +53,23 @@ const resolvers = {
   },
   Mutation: {
     login: (_, args) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         User.findOne({ username: args.username }, (err, user) => {
 
           if (err) {
-            reject(err)
+            resolve(err);
+            return;
           }
           if (!user) {
-            reject('Incorrect Username or Password')
+            resolve('Incorrect Username or Password')
           } else {
             bcrypt.compare(args.password, user.passwordHash, (err, results) => {
 
-              if (err) reject('Incorrect Username or Password')
+              if (err) resolve('Incorrect Username or Password')
               else {
                 results
                   ? resolve(jwt.sign({ user }, process.env.SECRET, { algorithm: 'HS256', expiresIn: '1d' }))
-                  : reject('Incorrect Username or Password')
+                  : resolve('Incorrect Username or Password')
               }
             })
           }
@@ -75,14 +77,14 @@ const resolvers = {
       })
     },
     signup: (_, args) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         User.findOne({ username: args.username }, (err, user) => {
 
           if (user) {
-            reject('Username already exists')
+            resolve('Username already exists')
           }
 
-          bcrypt.genSalt(Number(process.env.SALT), (err, salt) => {
+          else bcrypt.genSalt(Number(process.env.SALT), (err, salt) => {
             bcrypt.hash(args.password, salt)
               .then(passwordHash => {
                 User.create({ username: args.username, passwordHash: passwordHash })
