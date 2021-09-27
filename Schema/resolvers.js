@@ -25,7 +25,7 @@ const resolvers = {
       })
     },
     viewer: (_, __, { user, isAuth }) => {
-      console.log(isAuth)
+
       if (!isAuth) throw new Error('Not Authorized')
       const session = user.split('Bearer')[1].trim()
       const payload = jwt.verify(session, process.env.SECRET, function (err, decoded) {
